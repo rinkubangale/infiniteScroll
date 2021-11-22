@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeApi</title>
+</head>
+
+<body style="margin: 0 20%;display: flex; flex-direction: column; align-items: center">
+    <div>
+        <h1>New Masai List</h1>
+        <h2>Infinite Scrolling...</h2>
+    </div>
+    <div class="container">
+        <div class="list" id="list"></div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    async function getData() {
+        try {
+            let res = await fetch("http://fakeapi.jsonparseronline.com/posts")
+            var data = await res.json();
+        } catch (err) {
+            console.log("err:", err);
+        }
+        // console.log("data:", data);
+
+        function showData(d) {
+
+            let el = d
+
+            let list = document.getElementById("list");
+            list.style.display = "flex"
+            list.style.flexDirection = "column"
+            list.style.alignItems = "center"
+            // movies_div.innerHTML = null
+
+            el.map(function (e) {
+
+                let _div = document.createElement("div");
+                _div.style.border = "2px solid";
+                _div.style.width = "550px";
+                _div.style.padding = "15px"
+                _div.style.margin = "15px"
+                _div.style.display = "flex"
+                _div.style.flexDirection = "column"
+                _div.style.alignItems = "flex-start"
+
+                let _avt = document.createElement("img")
+                _avt.src = "https://ui-avatars.com/api/?background=random";
+                _avt.alt = "avatar";
+                _avt.style.float = "left";
+                _avt.style.marginRight = "30px";
+                _avt.style.borderRadius = "50%";
+
+                let _tit = document.createElement("p")
+                _tit.innerHTML = "User" + e.id;
+
+                let _cont = document.createElement("p")
+                _cont.innerHTML = e.title;
+
+                let _like = document.createElement("p")
+                _like.innerHTML = "❤" + " " + e.likes;
+                _like.style.float = "left";
+                _like.style.marginRight = "30px"
+
+                let _views = document.createElement("li")
+                _views.innerHTML = "➥" + " " + e.hits;
+
+                let div1 = document.createElement("div")
+                div1.style.display = "flex"
+                div1.style.alignItems = "center"
+                div1.append(_avt, _tit);
+
+                let div2 = document.createElement("div")
+                div2.style.display = "flex"
+                div2.style.alignItems = "center"
+                div2.append(_cont);
+
+                let div3 = document.createElement("div")
+                div3.style.display = "flex"
+                div3.style.alignItems = "center"
+                div3.append(_like, _views);
+
+                _div.append(div1, div2, div3);
+                list.append(_div);
+
+            })
+        }
+
+        let count = 0;
+
+        function callback() {
+            let i = 0;
+            let arr = [];
+            while (i < 5) {
+                arr.push(data[count++]);
+                i++;
+            }
+            showData(arr);
+        }
+        callback();
+
+
+        window.addEventListener("scroll", () => {
+            if (
+                window.scrollY + window.innerHeight + 1 >=
+                document.documentElement.scrollHeight
+            ) {
+                // console.log("Reached the end of window", count);
+                callback();
+            }
+        });
+
+    }
+    getData();
+</script>
