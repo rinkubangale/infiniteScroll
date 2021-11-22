@@ -7,11 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FakeApi</title>
 </head>
+<script src="https://smtpjs.com/v3/smtp.js"></script>;
 
 <body style="margin: 0 20%;display: flex; flex-direction: column; align-items: center">
     <div>
         <h1>New Masai List</h1>
         <h2>Infinite Scrolling...</h2>
+    </div>
+    <div>
+        <button id="sendEmail" onclick="sentEmail()">Send Mail</button>
     </div>
     <div class="container">
         <div class="list" id="list"></div>
@@ -119,4 +123,19 @@
 
     }
     getData();
+
+    let sendEmail = document.getElementById("sendEmail");
+
+    function sentEmail() {
+        console.log("Clicked");
+        Email.send({
+            Host: "smtp.gmail.com",
+            Username: "bangalehemant@gmail.com",
+            Password: "oprfmghykdfbbwcg",
+            To: "bangalehemant@gmail.com",
+            From: "bangalehemant@gmail.com",
+            Subject: "This is the testing email from Rinku",
+            Body: `And this is the body <br /> Hi Welcome in the texting zone <br /> We are friends now.`,
+        }).then((message) => alert("Mail sent Successfully"));
+    }
 </script>
